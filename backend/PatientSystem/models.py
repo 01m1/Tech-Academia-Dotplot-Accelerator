@@ -10,6 +10,9 @@ class Patients(models.Model):
     PatientWeight = models.IntegerField()
     PatientHistory = models.BooleanField()
     PatientUSScanID = models.IntegerField()
-    PatientCoordinates = models.CharField(max_length=5)
-    PatientScanDate = models.DateField()
-    PatientDiagnosis = models.CharField(15)
+
+class US_scans(models.Model):
+    USScanID = models.IntegerField()
+    Coordinates = models.CharField(max_length=5)
+    ScanDate = models.DateField()
+    Diagnosis = models.CharField(15)
