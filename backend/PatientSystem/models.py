@@ -14,5 +14,5 @@ class patients(models.Model):
 class us_scans(models.Model):
     scan_id = models.IntegerField()
     coordinates = models.CharField(max_length=5)
-    scanDate = models.DateField()
+    scan_date = models.DateField()
     diagnosis = models.CharField(15)
