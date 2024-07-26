@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import patients
 from .models import us_scans
+from .serializers import PatientSerializer
 import pandas as pd
 
 
@@ -43,6 +44,15 @@ def process_patient_data(request):
 
     return Response(df, status=status.HTTP_200_OK)
 
+# Send patient data in JSON format
 @api_view(['GET'])
 def receive_patient_data(request):
-    print()
+    try:
+
+        # Converts patient data from database into JSON format
+        patients_data = patients.objects.all()
+        serializer = PatientSerializer(patients_data, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
