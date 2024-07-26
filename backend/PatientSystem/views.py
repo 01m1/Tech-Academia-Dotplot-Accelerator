@@ -1,6 +1,8 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+from .models import patients
+from .models import us_scans
 import pandas as pd
 
 
@@ -21,10 +23,26 @@ def process_patient_data(request):
         # Read CSV file using pandas
         df = pd.read_csv(file)
         
-        print(df.head())
+        for index, row in df.iterrows():
+            # For Patient model
+            if 'Patient ID' in row and 'Patient Name' in row:
+                patients.objects.update_or_create(
+                    patient_id=row['Patient ID'],
+                    patient_name=row['Patient Name'],
+                    patient_age=row['Age'],
+                    patient_height=row['Height (cm)'],
+                    patient_weight=row['Weight (kg)'],
+                    patient_history=row['History of breast cancer'],
+                    patient_scan_id=row['US scan ID'],
+                )
+            else:
+                print(row)
         
-        return Response({'status': 'File processed successfully'}, status=status.HTTP_200_OK)
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    return Response(request)
+    return Response(df, status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def receive_patient_data(request):
+    print()
