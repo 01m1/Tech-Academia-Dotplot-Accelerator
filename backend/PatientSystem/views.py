@@ -1,10 +1,14 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
+
 from .models import patients, us_scans
 from .serializers import PatientSerializer, USScansSerializer
-import pandas as pd
 
+import pandas as pd
+from PIL import Image, ImageDraw
+from datetime import datetime
+import json
 
 # Process patient data
 @api_view(['POST'])
@@ -67,10 +71,14 @@ def process_usscans_data(request):
         for index, row in df.iterrows():
             # For US Scans model
             if 'US scan ID' in row:
+                # Convert UK date into US Date for django
+                uk_date = datetime.strptime(row['Scan Date'], '%d/%m/%Y')
+                us_date = uk_date.strftime('%Y-%m-%d')
+
                 us_scans.objects.update_or_create(
                     scan_id=row['US scan ID'],
                     coordinates=row['Coordinates'],
-                    scan_date=row['Scan Date'],
+                    scan_date=us_date,
                     diagnosis=row['Diagnosis'],
                 )
         
@@ -105,3 +113,23 @@ def receive_usscans_data(request):
 
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['POST'])
+def get_tumour_image(request):
+    try:
+        # Receive the scan id
+        data = json.loads(request.body)
+        user_id = data.get('user_id')
+
+        # Query the database for the patient's data
+        patient = us_scans.objects.filter(scan_id=user_id).first()
+
+        if not patient:
+            return Response({'error': 'Patient not found'}, status=404)
+        else:
+            print(patient)
+    except Exception as e:
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    tumour = patient.tumour_coordinates
+    print(tumour_coordinates)
