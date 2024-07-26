@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from django.http import FileResponse
 from rest_framework import status
 
 from .models import patients, us_scans
@@ -114,7 +115,7 @@ def receive_usscans_data(request):
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-@api_view(['POST'])
+@api_view(['GET'])
 def get_tumour_image(request):
     try:
         # Receive the scan id
@@ -127,11 +128,35 @@ def get_tumour_image(request):
         if not patient:
             return Response({'error': 'Patient not found'}, status=404)
 
+        # Coordinates of each grid cell to highlight tumour
+
+        coordinates = {
+            'A1': [(423, 894), (494, 965)], 'A2': [(423, 970), (494, 1041)], 'A3': [(423, 1046), (494, 1117)], 'A4': [(423, 1122), (494, 1193)],
+            'B1': [(499, 894), (569, 965)], 'B2': [(499, 970), (569, 1041)], 'B3': [(499, 1046), (569, 1117)], 'B4': [(499, 1122), (569, 1193)],
+            'C1': [(574, 894), (645, 965)], 'C2': [(574, 970), (645, 1041)], 'C3': [(574, 1046), (645, 1117)], 'C4': [(574, 1122), (645, 1193)],
+            'D1': [(650, 894), (721, 965)], 'D2': [(650, 970), (721, 1041)], 'D3': [(650, 1046), (721, 1117)], 'D4': [(650, 1122), (721, 1193)],
+            'E1': [(726, 894), (797, 965)], 'E2': [(726, 970), (797, 1041)], 'E3': [(726, 1046), (797, 1117)], 'E4': [(726, 1122), (797, 1193)],
+            'F1': [(802, 894), (872, 965)], 'F2': [(802, 970), (872, 1041)], 'F3': [(802, 1046), (872, 1117)], 'F4': [(802, 1122), (872, 1193)],
+            'G1': [(877, 894), (948, 965)], 'G2': [(877, 970), (948, 1041)], 'G3': [(877, 1046), (948, 1117)], 'G4': [(877, 1122), (948, 1193)],
+            'H1': [(953, 894), (1024, 965)], 'H2': [(953, 970), (1024, 1041)], 'H3': [(953, 1046), (1024, 1117)], 'H4': [(953, 1122), (1024, 1193)],      
+        }
+
+        tumour = patient.coordinates
+        
+        img_path = "./media/coordinates.png"
+        img = Image.open(img_path)
+        
+        draw = ImageDraw.Draw(img)
+
+        draw.rectangle([coordinates[tumour][0], coordinates[tumour][1]], outline=(255, 0, 0), width=50)
+
+        img.save("./media/tumour_highlighted.png")
+
+        response = FileResponse(open("./media/tumour_highlighted.png", 'rb'), content_type='image/png')
+        response['Content-Disposition'] = 'attachment; filename="tumour_highlighted"'
+
+        return response
+
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    tumour = patient.coordinates
-    print(tumour)
-
-    return Response(status=status.HTTP_200_OK)
     
