@@ -3,6 +3,7 @@ import { IoHome } from "react-icons/io5";
 import { RiBodyScanFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import { MdNoteAlt } from "react-icons/md";
+import { LuImport } from "react-icons/lu";
 
 const Sidebar = ({ sidebarToggle }) => {
   return (
@@ -32,21 +33,30 @@ const Sidebar = ({ sidebarToggle }) => {
           </Link>
         </li>
         <li className="mb-2 rounded hover:shadow hover:bg-[#549CFB] hover:text-white py-4">
-          <a href="/visualizer" className="px-4 flex items-center ">
+          <a href="/visualiser" className="px-4 flex items-center ">
             <RiBodyScanFill
-              className="inline-block w-6 h-6 mr-2 -mt-2"
-              aria-label="Visualize"
+              className="inline-block w-6 h-6 mr-2 -mt-1"
+              aria-label="Visualise"
             />
-            <p className="text-[14px]">Visualize</p>
+            <p className="text-[14px]">Visualise</p>
           </a>
         </li>
         <li className="mb-2 rounded hover:shadow hover:bg-[#549CFB] hover:text-white py-4">
           <a href="/registration" className="px-4 flex items-center">
             <MdNoteAlt
-              className="inline-block w-6 h-6 mr-2 -mt-2"
+              className="inline-block w-6 h-6 mr-2 -mt-1"
               aria-label="Registration forms"
             />
             <p className="text-[14px]">Registration forms</p>
+          </a>
+        </li>
+        <li className="mb-2 rounded hover:shadow hover:bg-[#549CFB] hover:text-white py-4 ">
+          <a href="/AddData" className="px-4 flex items-center">
+            <LuImport
+              className="inline-block w-6 h-6 mr-2 -mt-1"
+              aria-label="Add data"
+            />
+            <p className="text-[14px]">Add New Data</p>
           </a>
         </li>
       </ul>
