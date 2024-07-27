@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from django.http import FileResponse
 from rest_framework import status
 
-from .models import patients, us_scans
+from .models import patients, us_scans, admin_users
 from .serializers import PatientSerializer, USScansSerializer
 
 import pandas as pd
@@ -165,4 +165,10 @@ def get_tumour_image(request):
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-
+# Log in
+@api_view(['GET'])
+def admin_login(request):
+    if admin_users.objects.filter(user_name=request.data['username'], password=request.data['password']).exists():
+        return Response("Success", status=status.HTTP_200_OK)
+    else:
+        return Response("Failure", status=status.HTTP_200_OK)

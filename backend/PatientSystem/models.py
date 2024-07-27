@@ -21,4 +21,4 @@ class us_scans(models.Model):
 class admin_users(models.Model):
     user_id = models.IntegerField(primary_key=True)
     user_name = models.CharField(max_length=100)
-    password = models.DateField()
+    password = models.CharField(max_length=100)
