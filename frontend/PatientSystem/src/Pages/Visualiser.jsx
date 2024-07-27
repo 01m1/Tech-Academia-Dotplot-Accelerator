@@ -1,10 +1,11 @@
-import React from "react";
+import { useState } from "react";
 import Navbar from "../component/Navbar";
 import Sidebar from "../component/Sidebar";
 import VisualSidebar from "../component/VisualSidebar";
-import torso from "../assets/coordinates.png";
 
 const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
+  const [patientTorso, setPatientTorso] = useState('http://127.0.0.1:8000/media/coordinates.png');
+  
   return (
     <>
       <div>
@@ -22,9 +23,9 @@ const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
 
           <div className="text-black w-full px-14 pt-14 md:flex max-w-[950px] mx-auto">
             <div className="     ">
-              <VisualSidebar />
+              <VisualSidebar setTorso={setPatientTorso}/>
             </div>
-            <img src={torso} alt="Torso" className="md:w-[530px]  ml-10" />
+            <img src={patientTorso} alt="Torso" className="md:w-[530px]  ml-10" />
           </div>
         </div>
       </div>
