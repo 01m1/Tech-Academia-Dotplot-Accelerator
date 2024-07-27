@@ -33,6 +33,7 @@ def process_patient_data(request):
         
         for index, row in df.iterrows():
             # For patient model
+            print("!", row)
             if 'Patient ID' in row and 'Patient Name' in row:
                 
                 # Some patients have multiple scan ids
@@ -47,7 +48,8 @@ def process_patient_data(request):
                             patient_history=row['History of breast cancer'],
                             patient_scan_id=int(scan),
                         )
-        
+            else:
+                return Response({'error': 'File not in correct format'})
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -57,9 +59,10 @@ def process_patient_data(request):
 @api_view(['POST'])
 def process_usscans_data(request):
     # Check if file exists
+    
     if 'file' not in request.FILES:
         return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
-
+    
     file = request.FILES['file']
     
     # Check if file is CSV file
@@ -72,8 +75,8 @@ def process_usscans_data(request):
 
         # Read CSV file using pandas
         df = pd.read_csv(file)
-        
         for index, row in df.iterrows():
+            
             # For US Scans model
             if 'US scan ID' in row:
                 # Convert UK date into US Date for django
@@ -86,11 +89,10 @@ def process_usscans_data(request):
                     scan_date=us_date,
                     diagnosis=row['Diagnosis'],
                 )
-        
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    return Response(df, status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_200_OK)
 
 # Send patient data in JSON format
 @api_view(['GET'])

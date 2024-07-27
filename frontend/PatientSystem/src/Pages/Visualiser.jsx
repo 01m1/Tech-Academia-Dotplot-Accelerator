@@ -4,7 +4,7 @@ import Sidebar from "../component/Sidebar";
 import VisualSidebar from "../component/VisualSidebar";
 import torso from "../assets/coordinates.png";
 
-const Visualizer = ({ sidebarToggle, setSidebarToggle }) => {
+const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
   return (
     <>
       <div>
@@ -32,4 +32,4 @@ const Visualizer = ({ sidebarToggle, setSidebarToggle }) => {
   );
 };
 
-export default Visualizer;
+export default Visualiser;
