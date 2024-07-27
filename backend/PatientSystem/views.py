@@ -33,7 +33,6 @@ def process_patient_data(request):
         
         for index, row in df.iterrows():
             # For patient model
-            print("!", row)
             if 'Patient ID' in row and 'Patient Name' in row:
                 
                 # Some patients have multiple scan ids

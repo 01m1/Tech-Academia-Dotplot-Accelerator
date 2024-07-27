@@ -57,6 +57,12 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
                     } else {
                         alert("Data submitted successfully");
                         navigate('/');
+                        
+                        fetch("http://127.0.0.1:8000/patients/", {
+                            method: "GET",
+                        }).then((response) => {
+                            console.log(response);
+                        });
                     }
                 })
                 .catch((error) => {
