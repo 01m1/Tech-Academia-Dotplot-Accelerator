@@ -36,6 +36,12 @@
                         </div>
                         <button id="apply-filters" class="btn btn-primary">Load Data</button>
                     </div>
+                    <div class="card-body border border-warning rounded" id="warning">
+                        <h5 class="card-title text-danger">Warning</h5>
+                        <div class="mb-3">
+                            <h6 class="text-danger">Some scans or patient records are missing references and were not included. Please check the data to ensure all records are properly linked.</h6>
+                        </div>      
+                    </div>
                 </div>
             </div>
             <div class="col-md-9">
@@ -91,6 +97,8 @@
         let i = 0;
         const scans = [];
         
+        function fetchData() {
+            
         fetch('http://127.0.0.1:8000/usscans/', {
             method: "GET",
         })
@@ -135,12 +143,12 @@
                     i++;
                 }
                 if (!(c == i)) {
-                    alert("Some US scans or patient records are missing references and were not included. Please check the data to ensure all records are properly linked.");
+                    document.getElementById('warning').style.display = 'block';
                 }
             });            
         })
-
-        
+        updateVisualizations();
+    }
         
        
          // Function to parse date string (format is DD/MM/YYYY)
@@ -156,7 +164,6 @@
             const malignant = document.getElementById('malignant').checked;
             const startDate = document.getElementById('scan_date_start').value;
             const endDate = document.getElementById('scan_date_end').value;
-
             return patientData.filter(patient => {
                 const matchesSearch = patient.name.toLowerCase().includes(search) || patient.id.toLowerCase().includes(search);
                 const matchesDiagnosis = (benign && patient.diagnosis === "Benign") || (malignant && patient.diagnosis === "Malignant");
@@ -225,6 +232,7 @@
         // Function to update all visualizations
         function updateVisualizations() {
             const filteredData = filterData();
+            
             updateSummaryStats(filteredData);
             updateHistogram(filteredData);
             updatePatientTable(filteredData);
@@ -235,7 +243,10 @@
 
         // Initial update to show all data
         document.addEventListener('DOMContentLoaded', () => {
-            updateVisualizations();
+            setTimeout(() => {
+                fetchData();
+            }, 75);
+            fetchData();
         });
     </script>
 </body>
