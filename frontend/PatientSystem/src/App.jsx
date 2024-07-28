@@ -2,8 +2,8 @@ import React from "react";
 import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Dashboard from "./Pages/Dashboard";
-import Registration from "./Pages/Registration";
-import Visualizer from "./Pages/Visualizer";
+import Visualiser from "./Pages/Visualiser";
+import AddData from "./Pages/AddData.jsx"
 
 function App() {
   const [sidebarToggle, setSidebarToggle] = useState(false);
@@ -20,18 +20,18 @@ function App() {
           }
         />
         <Route
-          path="/registration"
+          path="/visualiser"
           element={
-            <Registration
+            <Visualiser
               setSidebarToggle={setSidebarToggle}
               sidebarToggle={sidebarToggle}
             />
           }
         />
         <Route
-          path="/visualizer"
+          path="/AddData"
           element={
-            <Visualizer
+            <AddData
               setSidebarToggle={setSidebarToggle}
               sidebarToggle={sidebarToggle}
             />

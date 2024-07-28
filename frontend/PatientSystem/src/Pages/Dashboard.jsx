@@ -7,6 +7,7 @@ import Table from "../component/Table";
 const Dashboard = ({ sidebarToggle, setSidebarToggle }) => {
   return (
     <>
+    
       <div>
         <Sidebar sidebarToggle={sidebarToggle} />
 

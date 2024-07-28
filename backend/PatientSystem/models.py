@@ -1,15 +1,24 @@
 from django.db import models
 
-# Create your models here.
+# Patients db
+class patients(models.Model):
+    patient_id = models.IntegerField()
+    patient_name = models.CharField(max_length=100)
+    patient_age = models.IntegerField()
+    patient_height = models.IntegerField()
+    patient_weight = models.IntegerField()
+    patient_history = models.CharField(max_length=10)
+    patient_scan_id = models.IntegerField(primary_key=True)
 
-class Patients(models.Model):
-    PatientID = models.AutoField(primary_key=True)
-    PatientName = models.CharField(max_length=100)
-    PatientAge = models.IntegerField()
-    PatientHeight = models.IntegerField()
-    PatientWeight = models.IntegerField()
-    PatientHistory = models.BooleanField()
-    PatientUSScanID = models.IntegerField()
-    PatientCoordinates = models.CharField(max_length=5)
-    PatientScanDate = models.DateField()
-    PatientDiagnosis = models.CharField(15)
+# US scans db
+class us_scans(models.Model):
+    scan_id = models.IntegerField(primary_key=True)
+    coordinates = models.CharField(max_length=5)
+    scan_date = models.DateField()
+    diagnosis = models.CharField(15)
+
+# Admin users db
+class admin_users(models.Model):
+    user_id = models.IntegerField(primary_key=True)
+    user_name = models.CharField(max_length=100)
+    password = models.CharField(max_length=100)
