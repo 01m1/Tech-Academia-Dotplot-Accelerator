@@ -11,7 +11,7 @@ const Sidebar = ({ sidebarToggle }) => {
     <div
       className={`fixed inset-0 ${
         sidebarToggle ? "hidden" : "block"
-      } w-[250px] shadow-md bg-[#005EB8] h-full pt-18 px-4 z-10`}
+      } w-[250px] shadow-md bg-[#005EB8] h-full pt-18 px-4 z-10 `}
     >
       <div className="pt-28">
         <div className="md-6 flex justify-center">

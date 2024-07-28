@@ -13,7 +13,7 @@ const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
 
         <div
           className={`${
-            sidebarToggle ? "" : "ml-28 ease-in-out duration-500"
+            sidebarToggle ? "ease-in-out duration-500" : "ml-28 ease-in-out duration-500"
           } w-full flex flex-col`}
         >
           <Navbar

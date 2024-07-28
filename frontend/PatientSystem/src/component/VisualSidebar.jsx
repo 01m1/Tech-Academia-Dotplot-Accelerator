@@ -20,9 +20,16 @@ const VisualSidebar = ({ setTorso }) => {
     })
     .then((data) => {        
       return data.json();
-    }).then((data) => {
-      const timestamp = new Date().getTime();
-      const tumourImage = `http://127.0.0.1:8000${data.tumour}?t=${timestamp}`;
+    }).then((data) => {   
+      let tumourImage;
+      
+      if (data.tumour == null) {
+        tumourImage = `http://127.0.0.1:8000/media/coordinates.png`;
+      } else {
+        const timestamp = new Date().getTime();
+        tumourImage = `http://127.0.0.1:8000${data.tumour}?t=${timestamp}`;
+      }
+      
       console.log(tumourImage)
       setId(data.patient_id);
       setPatientName(data.patient_name);
@@ -48,14 +55,18 @@ const VisualSidebar = ({ setTorso }) => {
           />
         </div>
         <div className="border shadow px-8 py-2 rounded-md text-[14px] bg-[#005EB8] ">
-          <ul className="flex flex-col gap-6 text-white py-14">
-            <li>Patient ID: {id}</li>
-            <li>Patient Name: {patientName}</li>
-            <li>Age: {patientAge}</li>
-            <li>Height: {height}</li>
-            <li>Weight: {weight}</li>
-            <li>History of Breast Cancer: {history}</li>
-          </ul>
+          {!id ? (
+            <h1 className="p-5 font-bold rounded text-white text-l text-center">Patient Not Found</h1>
+          ) : (
+            <ul className="flex flex-col gap-6 text-white pb-7 pt-7">
+              <li className="font-semibold">Patient ID: {id}</li>
+              <li className="font-semibold">Patient Name: {patientName}</li>
+              <li className="font-semibold">Age: {patientAge}</li>
+              <li className="font-semibold">Height: {height}</li>
+              <li className="font-semibold">Weight: {weight}</li>
+              <li className="font-semibold">History of Breast Cancer: {history}</li>
+            </ul>
+          )}
         </div>
 
       </div>
