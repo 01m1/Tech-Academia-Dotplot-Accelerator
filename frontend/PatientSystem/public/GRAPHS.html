@@ -9,7 +9,6 @@
 </head>
 <body>
     <div class="container-fluid">
-        <h1 class="mt-4">Patient Data Dashboard</h1>
         <div class="row">
             <div class="col-md-3">
                 <div class="card">
@@ -58,17 +57,17 @@
             <div class="col-md-9">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="scatter-tab" data-bs-toggle="tab" data-bs-target="#scatter" type="button" role="tab" aria-controls="scatter" aria-selected="true">Scatter Plot</button>
+                        <button class="nav-link" id="patient-tab" data-bs-toggle="tab" data-bs-target="#patient" type="button" role="tab" aria-controls="patient" aria-selected="false">Patient Details</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab" aria-controls="summary" aria-selected="false">Summary Stats</button>
-                    </li>
+                        <button class="nav-link active" id="scatter-tab" data-bs-toggle="tab" data-bs-target="#scatter" type="button" role="tab" aria-controls="scatter" aria-selected="true">Scatter Plot</button>
+                    </li>        
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="histogram-tab" data-bs-toggle="tab" data-bs-target="#histogram" type="button" role="tab" aria-controls="histogram" aria-selected="false">Histograms</button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="patient-tab" data-bs-toggle="tab" data-bs-target="#patient" type="button" role="tab" aria-controls="patient" aria-selected="false">Patient Details</button>
-                    </li>
+                        <button class="nav-link" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab" aria-controls="summary" aria-selected="false">Summary Statistics</button>
+                    </li>          
                 </ul>
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active" id="scatter" role="tabpanel" aria-labelledby="scatter-tab">
