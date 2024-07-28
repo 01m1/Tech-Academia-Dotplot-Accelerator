@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Data Dashboard</title>
+    <link rel="stylesheet" type="text/css" href= "styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.12.1/plotly.min.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        h1 {
+            color: #343a40;
+        }
+        .card {
+            margin-bottom: 20px;
+        }
+        .card-title {
+            color: #007bff;
+        }
+        .nav-tabs .nav-link {
+            color: #495057;
+        }
+        .nav-tabs .nav-link.active {
+            background-color: #007bff;
+            color: white;
+        }
+        #scatterPlot, #histogramPlot {
+            background-color: white;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        table {
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="mt-4">Patient Data Dashboard</h1>
+        <div class="row">
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Filters</h5>
+                        <div class="mb-3">
+                            <label for="var_x" class="form-label">X-axis Variable:</label>
+                            <select id="var_x" class="form-select">
+                                <option value="age">Age</option>
+                                <option value="height">Height</option>
+                                <option value="weight">Weight</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="var_y" class="form-label">Y-axis Variable:</label>
+                            <select id="var_y" class="form-select">
+                                <option value="age">Age</option>
+                                <option value="height">Height</option>
+                                <option value="weight">Weight</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="search" class="form-label">Search by Patient Name or ID:</label>
+                            <input type="text" id="search" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Diagnosis:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Benign" id="benign" checked>
+                                <label class="form-check-label" for="benign">Benign</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="Malignant" id="malignant" checked>
+                                <label class="form-check-label" for="malignant">Malignant</label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="scan_date_start" class="form-label">Scan Date Range:</label>
+                            <input type="date" id="scan_date_start" class="form-control mb-2">
+                            <input type="date" id="scan_date_end" class="form-control">
+                        </div>
+                        <button id="apply-filters" class="btn btn-primary">Apply Filters</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="scatter-tab" data-bs-toggle="tab" data-bs-target="#scatter" type="button" role="tab" aria-controls="scatter" aria-selected="true">Scatter Plot</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab" aria-controls="summary" aria-selected="false">Summary Stats</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="histogram-tab" data-bs-toggle="tab" data-bs-target="#histogram" type="button" role="tab" aria-controls="histogram" aria-selected="false">Histograms</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="patient-tab" data-bs-toggle="tab" data-bs-target="#patient" type="button" role="tab" aria-controls="patient" aria-selected="false">Patient Details</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="scatter" role="tabpanel" aria-labelledby="scatter-tab">
+                        <div id="scatterPlot" style="width:100%;height:400px;"></div>
+                    </div>
+                    <div class="tab-pane fade" id="summary" role="tabpanel" aria-labelledby="summary-tab">
+                        <pre id="summaryStats"></pre>
+                    </div>
+                    <div class="tab-pane fade" id="histogram" role="tabpanel" aria-labelledby="histogram-tab">
+                        <div id="histogramPlot" style="width:100%;height:400px;"></div>
+                    </div>
+                    <div class="tab-pane fade" id="patient" role="tabpanel" aria-labelledby="patient-tab">
+                        <table id="patientTable" class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Patient ID</th>
+                                    <th>Patient Name</th>
+                                    <th>Age</th>
+                                    <th>Height (cm)</th>
+                                    <th>Weight (kg)</th>
+                                    <th>History of Breast Cancer</th>
+                                    <th>US Scan ID</th>
+                                    <th>Scan Date</th>
+                                    <th>Diagnosis</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Patient data will be populated here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // JavaScript code for filtering and updating visualizations (same as before)
+    </script>
+</body>
+</html>
