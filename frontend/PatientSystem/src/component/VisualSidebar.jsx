@@ -20,13 +20,14 @@ const VisualSidebar = ({ setTorso, setTumour }) => {
     })
     .then((data) => {        
       return data.json();
-    }).then((data) => {   
+    })
+    .then((data) => {   
       let tumourImage;
       let realTumour;
       
       // Link to tumour images
       if (data.tumour == null) {
-        tumourImage = `http://127.0.0.1:8000/media/white.png`;
+        tumourImage = `http://127.0.0.1:8000/tumour/`;
       } else {
         const timestamp = new Date().getTime();
         tumourImage = `http://127.0.0.1:8000${data.tumour}?t=${timestamp}`;

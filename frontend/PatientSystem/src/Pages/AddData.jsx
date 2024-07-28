@@ -88,7 +88,7 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
 
       <div
         className={`${
-          sidebarToggle ? "" : "ml-32 ease-in-out duration-500"
+          sidebarToggle ? "ease-in-out duration-500" : "ml-32 ease-in-out duration-500"
         } w-full flex flex-col`}
       >
         <Navbar

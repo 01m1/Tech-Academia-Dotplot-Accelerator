@@ -10,7 +10,7 @@ class PatientSerializer(serializers.ModelSerializer):
 class UKDateConvert(serializers.DateField):
     # Convert US Date back into UK Date
     def to_representation(self, value):
-        return value.strftime('%d/%m/%Y')
+        return value.strftime('%Y-%m-%d')
 
 class USScansSerializer(serializers.ModelSerializer):
     scan_date = UKDateConvert()

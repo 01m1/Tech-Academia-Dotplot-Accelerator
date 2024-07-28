@@ -4,7 +4,7 @@ import Sidebar from "../component/Sidebar";
 import VisualSidebar from "../component/VisualSidebar";
 
 const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
-  const [patientTorso, setPatientTorso] = useState('http://127.0.0.1:8000/media/white.png');
+  const [patientTorso, setPatientTorso] = useState('http://127.0.0.1:8000/tumour/');
   const [patientTumour, setPatientTumour] = useState('http://127.0.0.1:8000/media/white.png');
   
   return (
