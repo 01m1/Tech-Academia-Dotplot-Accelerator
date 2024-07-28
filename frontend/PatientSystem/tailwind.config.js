@@ -2,12 +2,11 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
-  },
-  plugins: [],
-  variants: {
     extend: {
-      display: ["focus-group"],
+      backgroundImage: {
+        "custom-image": "url('/src/assets/banner.jpeg')",
+      },
     },
   },
+  plugins: [],
 };
