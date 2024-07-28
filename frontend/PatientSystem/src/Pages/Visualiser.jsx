@@ -1,10 +1,12 @@
-import React from "react";
+import { useState } from "react";
 import Navbar from "../component/Navbar";
 import Sidebar from "../component/Sidebar";
 import VisualSidebar from "../component/VisualSidebar";
-import torso from "../assets/coordinates.png";
 
 const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
+  const [patientTorso, setPatientTorso] = useState('http://127.0.0.1:8000/media/white.png');
+  const [patientTumour, setPatientTumour] = useState('http://127.0.0.1:8000/media/white.png');
+  
   return (
     <>
       <div>
@@ -12,7 +14,7 @@ const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
 
         <div
           className={`${
-            sidebarToggle ? "" : "ml-28 ease-in-out duration-500"
+            sidebarToggle ? "ease-in-out duration-500" : "ml-28 ease-in-out duration-500"
           } w-full flex flex-col`}
         >
           <Navbar
@@ -20,11 +22,16 @@ const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
             sidebarToggle={sidebarToggle}
           />
 
-          <div className="text-black w-full px-14 pt-14 md:flex max-w-[950px] mx-auto">
-            <div className="     ">
-              <VisualSidebar />
-            </div>
-            <img src={torso} alt="Torso" className="md:w-[530px]  ml-10" />
+          <div className="flex items-center">
+            <div className="text-black w-full px-14 pt-14 flex max-w-[950px] mx-auto">
+              <div>
+                <VisualSidebar setTorso={setPatientTorso} setTumour={setPatientTumour}/>
+              </div>
+              <div className="flex flex-col items-center ml-10 mt-10">
+                <img src={patientTumour}  className="h-48 w-80 mt-10"/>
+                <img src={patientTorso} alt="Torso" className="md:w-[370px] ml-15" />
+              </div>       
+            </div>         
           </div>
         </div>
       </div>

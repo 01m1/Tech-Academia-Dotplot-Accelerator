@@ -1,6 +1,6 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from django.http import FileResponse
+from django.http import JsonResponse
 from rest_framework import status
 
 from .models import patients, us_scans, admin_users
@@ -98,7 +98,6 @@ def process_usscans_data(request):
 def receive_patient_data(request):
 
     try:
-
         # Converts patient data from database into JSON format
         patients_data = patients.objects.all()
         serializer = PatientSerializer(patients_data, many=True)
@@ -125,17 +124,18 @@ def receive_usscans_data(request):
 def get_tumour_image(request):
     try:
         # Receive the scan id
-        data = json.loads(request.body)
-        user_id = data.get('scan_id')
+
+        user_id = request.GET.get('user_id')
         
         # Query the database for the patient's data
-        patient = us_scans.objects.filter(scan_id=user_id).first()
-
+        patient = patients.objects.filter(patient_id=user_id).first()
         if not patient:
             return Response({'error': 'Patient not found'}, status=404)
 
+        scan = patient.patient_scan_id
+        patient = us_scans.objects.filter(scan_id=scan).first()
         # Coordinates of each grid cell to highlight tumour
-
+        
         coordinates = {
             'A1': [(423, 894), (494, 965)], 'A2': [(423, 970), (494, 1041)], 'A3': [(423, 1046), (494, 1117)], 'A4': [(423, 1122), (494, 1193)],
             'B1': [(499, 894), (569, 965)], 'B2': [(499, 970), (569, 1041)], 'B3': [(499, 1046), (569, 1117)], 'B4': [(499, 1122), (569, 1193)],
@@ -155,13 +155,30 @@ def get_tumour_image(request):
         draw = ImageDraw.Draw(img)
 
         draw.rectangle([coordinates[tumour][0], coordinates[tumour][1]], outline=(255, 0, 0), width=50)
-
+        
         img.save("./media/tumour_highlighted.png")
+        patient = patients.objects.filter(patient_id=user_id).first()
+        patient_id = patient.patient_id
+        patient_name = patient.patient_name
+        patient_age = patient.patient_age
+        patient_height = patient.patient_height
+        patient_weight = patient.patient_weight
+        patient_history = patient.patient_history
+        
 
-        response = FileResponse(open("./media/tumour_highlighted.png", 'rb'), content_type='image/png')
-        response['Content-Disposition'] = 'attachment; filename="tumour_highlighted"'
 
-        return response
+        response_data = {
+            'patient_id': patient_id,
+            'patient_name': patient_name,
+            'patient_age': patient_age,
+            'patient_height': patient_height,
+            'patient_weight': patient_weight,
+            'patient_history': patient_history,
+            'tumour': '/media/tumour_highlighted.png',
+            'tumour_image': f'/media/{scan}.png'
+        }
+
+        return JsonResponse(response_data, status=status.HTTP_200_OK)
 
     except Exception as e:
         return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
