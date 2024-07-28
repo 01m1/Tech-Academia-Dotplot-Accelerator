@@ -162,7 +162,7 @@ def get_tumour_image(request):
         patient_name = patient.patient_name
         patient_age = patient.patient_age
         patient_height = patient.patient_height
-        patient_weight = patient.patient_height
+        patient_weight = patient.patient_weight
         patient_history = patient.patient_history
         
 
@@ -174,7 +174,8 @@ def get_tumour_image(request):
             'patient_height': patient_height,
             'patient_weight': patient_weight,
             'patient_history': patient_history,
-            'tumour': '/media/tumour_highlighted.png'
+            'tumour': '/media/tumour_highlighted.png',
+            'tumour_image': f'/media/{scan}.png'
         }
 
         return JsonResponse(response_data, status=status.HTTP_200_OK)

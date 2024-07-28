@@ -1,7 +1,7 @@
 import { IoSearchOutline } from "react-icons/io5";
 import { useState } from "react";
 
-const VisualSidebar = ({ setTorso }) => {
+const VisualSidebar = ({ setTorso, setTumour }) => {
 
   const [PatientValue, setValue] = useState("");
 
@@ -22,12 +22,20 @@ const VisualSidebar = ({ setTorso }) => {
       return data.json();
     }).then((data) => {   
       let tumourImage;
+      let realTumour;
       
+      // Link to tumour images
       if (data.tumour == null) {
-        tumourImage = `http://127.0.0.1:8000/media/coordinates.png`;
+        tumourImage = `http://127.0.0.1:8000/media/white.png`;
       } else {
         const timestamp = new Date().getTime();
         tumourImage = `http://127.0.0.1:8000${data.tumour}?t=${timestamp}`;
+      }
+      if (data.tumour_image == null) {
+        realTumour = `http://127.0.0.1:8000/media/white.png`;
+      } else {
+        const timestamp = new Date().getTime();
+        realTumour = `http://127.0.0.1:8000${data.tumour_image}?t=${timestamp}`;
       }
       
       console.log(tumourImage)
@@ -38,6 +46,7 @@ const VisualSidebar = ({ setTorso }) => {
       setWeight(data.patient_weight);
       setHistory(data.patient_history);
       setTorso(tumourImage);
+      setTumour(realTumour);
     })
     
   };
@@ -54,11 +63,11 @@ const VisualSidebar = ({ setTorso }) => {
             onChange={(e) => setValue(e.target.value)}
           />
         </div>
-        <div className="border shadow px-8 py-2 rounded-md text-[14px] bg-[#005EB8] ">
+        <div className="border shadow px-8 py-10 pb-20 rounded-md text-[15px] bg-[#005EB8] ">
           {!id ? (
             <h1 className="p-5 font-bold rounded text-white text-l text-center">Patient Not Found</h1>
           ) : (
-            <ul className="flex flex-col gap-6 text-white pb-7 pt-7">
+            <ul className="flex flex-col gap-10 text-white pb-1 pt-7">
               <li className="font-semibold">Patient ID: {id}</li>
               <li className="font-semibold">Patient Name: {patientName}</li>
               <li className="font-semibold">Age: {patientAge}</li>

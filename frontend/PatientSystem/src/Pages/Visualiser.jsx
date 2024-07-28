@@ -4,7 +4,8 @@ import Sidebar from "../component/Sidebar";
 import VisualSidebar from "../component/VisualSidebar";
 
 const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
-  const [patientTorso, setPatientTorso] = useState('http://127.0.0.1:8000/media/coordinates.png');
+  const [patientTorso, setPatientTorso] = useState('http://127.0.0.1:8000/media/white.png');
+  const [patientTumour, setPatientTumour] = useState('http://127.0.0.1:8000/media/white.png');
   
   return (
     <>
@@ -21,11 +22,16 @@ const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
             sidebarToggle={sidebarToggle}
           />
 
-          <div className="text-black w-full px-14 pt-14 md:flex max-w-[950px] mx-auto">
-            <div className="     ">
-              <VisualSidebar setTorso={setPatientTorso}/>
-            </div>
-            <img src={patientTorso} alt="Torso" className="md:w-[530px]  ml-10" />
+          <div className="flex items-center">
+            <div className="text-black w-full px-14 pt-14 flex max-w-[950px] mx-auto">
+              <div>
+                <VisualSidebar setTorso={setPatientTorso} setTumour={setPatientTumour}/>
+              </div>
+              <div className="flex flex-col items-center ml-10 mt-10">
+                <img src={patientTumour}  className="h-48 w-80 mt-10"/>
+                <img src={patientTorso} alt="Torso" className="md:w-[370px] ml-15" />
+              </div>       
+            </div>         
           </div>
         </div>
       </div>
