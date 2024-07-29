@@ -25,7 +25,7 @@ const Dashboard = ({ sidebarToggle, setSidebarToggle }) => {
               <div className="flex mt-10 bg-white justify-start w-full  border shadow  py-2 rounded-md text-[15px]">
                 <div>
 
-                  <iframe src="/GRAPHS.html" style={{ width: '1230px', height: '650px' }} />
+                  <iframe src="/GRAPHS.html" style={{ width: '1230px', height: '660px' }} />
 
                 </div>
               </div>

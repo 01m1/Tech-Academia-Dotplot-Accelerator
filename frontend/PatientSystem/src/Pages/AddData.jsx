@@ -96,8 +96,8 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
           sidebarToggle={sidebarToggle}
         />
 
-        <div className="text-black w-full px-10  pt-6 text-center">
-          <div className="max-w-[600px] mt-[10px] rounded-md h-[auto] mx-auto px-8 flex flex-col text-center py-10 ">
+        <div className="text-black text-center">
+          <div className="max-w-[600px]  rounded-md h-[auto] mx-auto px-8 flex flex-col text-center py-10 ">
             <div className="flex mt-5 items-start bg-white justify-center w-full border shadow px-8 py-12 rounded-md text-[14px]">
               <form
                 onSubmit={handleSubmit}
@@ -145,6 +145,31 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
                     Submit
                   </button>
                 </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-black text-center">
+          <div className="max-w-[600px] rounded-md h-[auto] mx-auto px-8 flex flex-col text-center py-5 ">
+            <div className="flex mt-5 items-start bg-white justify-center w-full border shadow px-8 py-12 rounded-md text-[14px]">
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col items-center"
+              >
+                <h1 className="text-[22px] font-bold text-[#eb3131] mt-5">
+                  REMOVE ROW
+                </h1>
+                <p className="text-[16px] font-semibold text-gray-700 mt-3">
+                  Enter User ID
+                </p>
+                  <input className="border mb-5 mt-4"></input>
+                  <button
+                    type="submit"
+                    className="bg-[#33ab39] font-semibold text-white py-3 px-6 rounded-lg hover:bg-[#1e6321] transition duration-300 ease-in-out"
+                  >
+                    Submit
+                  </button>
               </form>
             </div>
           </div>
