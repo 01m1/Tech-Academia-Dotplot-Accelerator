@@ -11,7 +11,7 @@ const Dashboard = ({ sidebarToggle, setSidebarToggle }) => {
 
         <div
           className={`${
-            sidebarToggle ? "" : "ml-32 ease-in-out duration-500"
+            sidebarToggle ? "ease-in-out duration-500" : "ml-32 ease-in-out duration-500"
           } w-full flex flex-col`}
         >
           <Navbar
@@ -25,7 +25,7 @@ const Dashboard = ({ sidebarToggle, setSidebarToggle }) => {
               <div className="flex mt-10 bg-white justify-start w-full  border shadow  py-2 rounded-md text-[15px]">
                 <div>
 
-                  <iframe src="/GRAPHS.html" style={{ width: '1230px', height: '600px' }} />
+                  <iframe src="/GRAPHS.html" style={{ width: '1230px', height: '660px' }} />
 
                 </div>
               </div>

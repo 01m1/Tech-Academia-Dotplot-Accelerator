@@ -59,13 +59,11 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
                 return;
               } else {
                 alert("Data submitted successfully");
-                navigate("/");
+                navigate("/Dashboard");
 
                 fetch("http://127.0.0.1:8000/patients/", {
                   method: "GET",
-                }).then((response) => {
-                  console.log(response);
-                });
+                })
               }
             })
             .catch((error) => {
@@ -82,13 +80,30 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
       });
   };
 
+  const setScanImage = (e) => {
+    const file = e.target.files[0];
+    const files = new FormData();
+    files.append("file", file);
+
+    fetch('http://127.0.0.1:8000/imageadd', {
+      method: "PUT",
+      body: files
+    })
+    .then(() => {        
+      alert('Image added successfully');
+    })
+    .catch(() => {
+      alert('Please ensure you are entering images in the correct format');
+    })
+  };
+
   return (
     <div>
       <Sidebar sidebarToggle={sidebarToggle} />
 
       <div
         className={`${
-          sidebarToggle ? "" : "ml-32 ease-in-out duration-500"
+          sidebarToggle ? "ease-in-out duration-500" : "ml-32 ease-in-out duration-500"
         } w-full flex flex-col`}
       >
         <Navbar
@@ -96,8 +111,8 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
           sidebarToggle={sidebarToggle}
         />
 
-        <div className="text-black w-full px-10  pt-6 text-center">
-          <div className="max-w-[600px] mt-[10px] rounded-md h-[auto] mx-auto px-8 flex flex-col text-center py-10 ">
+        <div className="text-black text-center">
+          <div className="max-w-[600px]  rounded-md h-[auto] mx-auto px-8 flex flex-col text-center py-10 ">
             <div className="flex mt-5 items-start bg-white justify-center w-full border shadow px-8 py-12 rounded-md text-[14px]">
               <form
                 onSubmit={handleSubmit}
@@ -136,6 +151,7 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
                     />
                     Add US Scan Data
                   </label>
+                
                 </div>
                 <div className="mt-5">
                   <button
@@ -145,6 +161,34 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
                     Submit
                   </button>
                 </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-black text-center">
+          <div className="max-w-[600px] rounded-md h-[auto] mx-auto px-8 flex flex-col text-center py-5 ">
+            <div className="flex mt-5 items-start bg-white justify-center w-full border shadow px-8 py-12 rounded-md text-[14px]">
+              <form
+                onSubmit={handleSubmit}
+                className="flex flex-col items-center"
+              >
+                <h1 className="text-[22px] font-bold text-[#eb3131] mt-5">
+                  ADD SCAN IMAGE
+                </h1>
+                <p className="text-[16px] font-semibold text-gray-700 mt-2 mb-5">
+                  Add available user scan image, naming it with the scan ID (.png)
+                </p>
+                <label className="cursor-pointer bg-[#005EB8] font-semibold text-white py-3 px-6 rounded-lg hover:bg-[#004a9e] transition duration-300 ease-in-out">
+                  <input
+                    type="file"
+                    id="scanImage"
+                    className="hidden"
+                    accept=".png"
+                    onChange={(e) => setScanImage(e)}
+                  />
+                  Add Scan
+                </label>
               </form>
             </div>
           </div>

@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
 from rest_framework import status
+from django.core.files.base import ContentFile
 
 from .models import patients, us_scans, admin_users
 from .serializers import PatientSerializer, USScansSerializer
@@ -126,14 +127,8 @@ def get_tumour_image(request):
         # Receive the scan id
 
         user_id = request.GET.get('user_id')
-        
-        # Query the database for the patient's data
-        patient = patients.objects.filter(patient_id=user_id).first()
-        if not patient:
-            return Response({'error': 'Patient not found'}, status=404)
+        patient_list = False
 
-        scan = patient.patient_scan_id
-        patient = us_scans.objects.filter(scan_id=scan).first()
         # Coordinates of each grid cell to highlight tumour
         
         coordinates = {
@@ -147,16 +142,50 @@ def get_tumour_image(request):
             'H1': [(953, 894), (1024, 965)], 'H2': [(953, 970), (1024, 1041)], 'H3': [(953, 1046), (1024, 1117)], 'H4': [(953, 1122), (1024, 1193)],      
         }
 
-        tumour = patient.coordinates
-        
         img_path = "./media/coordinates.png"
-        img = Image.open(img_path)
-        
-        draw = ImageDraw.Draw(img)
 
-        draw.rectangle([coordinates[tumour][0], coordinates[tumour][1]], outline=(255, 0, 0), width=50)
-        
-        img.save("./media/tumour_highlighted.png")
+        # Query the database for the patient's data
+        if len(patients.objects.filter(patient_id=user_id).all()) > 1:
+            patient_list = True
+            patient = []
+            for p in patients.objects.filter(patient_id=user_id).all():
+                patient.append(p)
+        else:
+            patient = patients.objects.filter(patient_id=user_id).first()
+
+        if not patient:
+            return Response({'error': 'Patient not found'}, status=404)
+
+        # Only a single tumour
+        if not patient_list:
+            scan = patient.patient_scan_id
+            patient = us_scans.objects.filter(scan_id=scan).first()
+            tumour = patient.coordinates
+
+            img = Image.open(img_path)    
+            draw = ImageDraw.Draw(img)
+            draw.rectangle([coordinates[tumour][0], coordinates[tumour][1]], outline=(255, 0, 0), width=50)
+            img.save("./media/tumour_highlighted.png")
+
+        else:
+            scans = []
+            tumours = []
+            for p in patient:
+                scans.append(p.patient_scan_id)
+
+            for s in scans:
+                tumours.append(us_scans.objects.filter(scan_id=s).first().coordinates)
+            
+            img = Image.open(img_path)    
+            draw = ImageDraw.Draw(img)
+            for t in tumours:
+                draw.rectangle([coordinates[t][0], coordinates[t][1]], outline=(255, 0, 0), width=50)
+            img.save("./media/tumour_highlighted.png")
+
+            sendscans = []
+            for s in scans:
+                sendscans.append(f'/media/{s}.png')
+
         patient = patients.objects.filter(patient_id=user_id).first()
         patient_id = patient.patient_id
         patient_name = patient.patient_name
@@ -164,8 +193,11 @@ def get_tumour_image(request):
         patient_height = patient.patient_height
         patient_weight = patient.patient_weight
         patient_history = patient.patient_history
-        
 
+        if patient_list:
+            sendscans = sendscans
+        else:
+            sendscans = f'/media/{scan}.png'
 
         response_data = {
             'patient_id': patient_id,
@@ -175,7 +207,7 @@ def get_tumour_image(request):
             'patient_weight': patient_weight,
             'patient_history': patient_history,
             'tumour': '/media/tumour_highlighted.png',
-            'tumour_image': f'/media/{scan}.png'
+            'tumour_image': sendscans
         }
 
         return JsonResponse(response_data, status=status.HTTP_200_OK)
@@ -186,7 +218,48 @@ def get_tumour_image(request):
 # Log in
 @api_view(['GET'])
 def admin_login(request):
-    if admin_users.objects.filter(user_name=request.data['username'], password=request.data['password']).exists():
+
+    username = request.GET.get('username')
+    password = request.GET.get('password')
+
+    if admin_users.objects.filter(user_name=username, password=password).exists():
         return Response("Success", status=status.HTTP_200_OK)
     else:
         return Response("Failure", status=status.HTTP_200_OK)
+
+# Delete Row
+@api_view(['DELETE'])
+def delete_user(request):
+    user_id = request.GET.get('user_id')
+    try:
+        patient = patients.objects.filter(patient_id=int(user_id))
+        if not patient.exists:
+            return Response({'error': 'Patient not found'}, status=404)
+        
+        patient_scan = patient[0].patient_scan_id
+        patient_scan = us_scans.objects.filter(scan_id=patient_scan)
+        
+        patient.delete()
+        patient_scan.delete()
+
+        return Response(status=status.HTTP_200_OK)
+    except:
+        return Response({'error': 'Patient not found'}, status=404)
+
+@api_view(['PUT'])
+def add_image(request):
+    try:
+        if 'file' not in request.FILES:
+            return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        file = request.FILES['file']
+        file_name = str(file)
+        file_path = f'./media/{file_name}'
+
+        with open(file_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+        
+        return Response({'status': 'success', 'file_path': file_path})
+    except:
+        return Response({'status': 'error'}, status=400)

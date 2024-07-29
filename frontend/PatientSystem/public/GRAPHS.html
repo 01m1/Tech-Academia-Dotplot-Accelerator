@@ -15,22 +15,6 @@
                     <div class="card-body">
                         <h5 class="card-title">Filters</h5>
                         <div class="mb-3">
-                            <label for="var_x" class="form-label">X-axis Variable:</label>
-                            <select id="var_x" class="form-select">
-                                <option value="age">Age</option>
-                                <option value="height">Height</option>
-                                <option value="weight">Weight</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="var_y" class="form-label">Y-axis Variable:</label>
-                            <select id="var_y" class="form-select">
-                                <option value="age">Age</option>
-                                <option value="height">Height</option>
-                                <option value="weight">Weight</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
                             <label for="search" class="form-label">Search by Patient Name or ID:</label>
                             <input type="text" id="search" class="form-control">
                         </div>
@@ -45,41 +29,47 @@
                                 <label class="form-check-label" for="malignant">Malignant</label>
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-2">
                             <label for="scan_date_start" class="form-label">Scan Date Range:</label>
                             <input type="date" id="scan_date_start" class="form-control mb-2">
                             <input type="date" id="scan_date_end" class="form-control">
                         </div>
-                        <button id="apply-filters" class="btn btn-primary">Apply Filters</button>
                     </div>
+                    <div class="text-center">
+                        <button id="apply-filters" class="btn btn-primary mb-2" style="width: 120px;">Load Data</button>
+                    </div>
+                    <div class="text-center">
+                        <label for="Deletion" class="form-label">Click a row to remove user</label>
+                    </div>
+                    <div class="card-body border rounded border-warning w-10" id="warning">
+                        <h5 class="card-title text-danger">Warning</h5>
+                        <div class="mb-3">
+                            <h6 class="text-danger">Some scans or patient records are missing references and were not included. Please check the data to ensure all records are properly linked.</h6>
+                        </div>      
+                    </div>
+                    
                 </div>
             </div>
             <div class="col-md-9">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="patient-tab" data-bs-toggle="tab" data-bs-target="#patient" type="button" role="tab" aria-controls="patient" aria-selected="false">Patient Details</button>
-                    </li>
+                        <button class="nav-link active" id="patient-tab" data-bs-toggle="tab" data-bs-target="#patient" type="button" role="tab" aria-controls="patient" aria-selected="true">Patient Details</button>
+                    </li>      
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link active" id="scatter-tab" data-bs-toggle="tab" data-bs-target="#scatter" type="button" role="tab" aria-controls="scatter" aria-selected="true">Scatter Plot</button>
-                    </li>        
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="histogram-tab" data-bs-toggle="tab" data-bs-target="#histogram" type="button" role="tab" aria-controls="histogram" aria-selected="false">Histograms</button>
+                        <button class="nav-link" id="histogram-tab" data-bs-toggle="tab" data-bs-target="#histogram" type="button" role="tab" aria-controls="histogram" aria-selected="false">Histogram</button>
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="summary-tab" data-bs-toggle="tab" data-bs-target="#summary" type="button" role="tab" aria-controls="summary" aria-selected="false">Summary Statistics</button>
                     </li>          
                 </ul>
                 <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="scatter" role="tabpanel" aria-labelledby="scatter-tab">
-                        <div id="scatterPlot" style="width:100%;height:400px;"></div>
-                    </div>
                     <div class="tab-pane fade" id="summary" role="tabpanel" aria-labelledby="summary-tab">
-                        <pre id="summaryStats"></pre>
+                        <pre id="summaryStats" ></pre>
                     </div>
                     <div class="tab-pane fade" id="histogram" role="tabpanel" aria-labelledby="histogram-tab">
                         <div id="histogramPlot" style="width:100%;height:400px;"></div>
                     </div>
-                    <div class="tab-pane fade" id="patient" role="tabpanel" aria-labelledby="patient-tab">
+                    <div class="tab-pane fade show active" id="patient" role="tabpanel" aria-labelledby="patient-tab">
                         <table id="patientTable" class="table table-striped table-hover">
                             <thead>
                                 <tr>
@@ -95,7 +85,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <!-- Patient data will be populated here -->
+                                <!-- Patient Data -->
                             </tbody>
                         </table>
                     </div>
@@ -107,60 +97,67 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
     <script>
         // Updated patient data
-        const patientData = [
-            { id: "1107", name: "Saima Ellis", age: 26, height: 177, weight: 81, history: "No", scanId: "468", scanDate: "2023-05-17", diagnosis: "Benign" },
-            { id: "1301", name: "Raja Prescott", age: 35, height: 162, weight: 65, history: "No", scanId: "233", scanDate: "2023-07-03", diagnosis: "Benign" },
-            { id: "1309", name: "Sue Maynard", age: 38, height: 183, weight: 83, history: "No", scanId: "421", scanDate: "2023-07-13", diagnosis: "Benign" },
-            { id: "1348", name: "Tammy Bowman", age: 22, height: 151, weight: 88, history: "Yes", scanId: "489", scanDate: "2023-09-06", diagnosis: "Benign" },
-            { id: "1680", name: "Flora Hancock", age: 50, height: 190, weight: 85, history: "No", scanId: "108 488", scanDate: "2023-01-05", diagnosis: "Benign" },
-            { id: "2008", name: "Andrea Ogden", age: 45, height: 189, weight: 87, history: "No", scanId: "765", scanDate: "2023-09-15", diagnosis: "Benign" },
-            { id: "2338", name: "Kay Slade", age: 20, height: 180, weight: 81, history: "No", scanId: "709", scanDate: "2023-03-14", diagnosis: "Benign" },
-            { id: "2588", name: "Claudia Reilly", age: 23, height: 171, weight: 58, history: "No", scanId: "808 690", scanDate: "2023-06-14", diagnosis: "Benign" },
-            { id: "2709", name: "Minnie Kenny", age: 23, height: 156, weight: 91, history: "No", scanId: "121 409 331", scanDate: "2023-01-18", diagnosis: "Benign" },
-            { id: "2716", name: "Frances Fawcett", age: 44, height: 169, weight: 53, history: "No", scanId: "402 625", scanDate: "2023-03-07", diagnosis: "Benign" },
-            { id: "2898", name: "Thelma Fryer", age: 22, height: 182, weight: 81, history: "No", scanId: "809 495 341", scanDate: "2023-04-13", diagnosis: "Benign" },
-            { id: "3000", name: "Joanna Archer", age: 52, height: 188, weight: 76, history: "Yes", scanId: "352", scanDate: "2023-10-04", diagnosis: "Benign" },
-            { id: "3023", name: "Lyndsey Haworth", age: 32, height: 184, weight: 86, history: "No", scanId: "740 412 739", scanDate: "2023-05-26", diagnosis: "Benign" },
-            { id: "3030", name: "Madeline Sadler", age: 56, height: 186, weight: 83, history: "No", scanId: "686", scanDate: "2023-11-17", diagnosis: "Benign" },
-            { id: "3132", name: "Norma Rogers", age: 53, height: 154, weight: 83, history: "No", scanId: "177", scanDate: "2024-07-01", diagnosis: "Benign" },
-            { id: "3274", name: "Sandy Fry", age: 29, height: 167, weight: 75, history: "No", scanId: "128", scanDate: "2023-09-13", diagnosis: "Benign" },
-            { id: "3377", name: "Sandra Whiting", age: 58, height: 178, weight: 97, history: "No", scanId: "725", scanDate: "2024-03-18", diagnosis: "Benign" },
-            { id: "3992", name: "Julie Sinclair", age: 23, height: 179, weight: 61, history: "No", scanId: "653 515 509", scanDate: "2023-08-01", diagnosis: "Malignant" },
-            { id: "4131", name: "Mariam Leech", age: 39, height: 181, weight: 52, history: "No", scanId: "603 890", scanDate: "2023-12-28", diagnosis: "Benign" },
-            { id: "4186", name: "Rosie Croft", age: 29, height: 184, weight: 78, history: "No", scanId: "872", scanDate: "2023-03-15", diagnosis: "Benign" },
-            { id: "4262", name: "Sally Carey", age: 24, height: 176, weight: 67, history: "No", scanId: "237", scanDate: "2024-06-13", diagnosis: "Benign" },
-            { id: "4445", name: "Katy Oxley", age: 56, height: 187, weight: 51, history: "No", scanId: "749 836", scanDate: "2023-06-16", diagnosis: "Malignant" },
-            { id: "4511", name: "Juliette Chambers", age: 44, height: 175, weight: 66, history: "No", scanId: "794", scanDate: "2024-01-18", diagnosis: "Benign" },
-            { id: "4734", name: "Juliet Williams", age: 53, height: 163, weight: 94, history: "No", scanId: "878", scanDate: "2023-12-06", diagnosis: "Benign" },
-            { id: "4926", name: "Catriona Howes", age: 52, height: 188, weight: 98, history: "No", scanId: "863 464 299", scanDate: "2023-01-31", diagnosis: "Benign" },
-            { id: "5354", name: "Mandeep Farrar", age: 33, height: 172, weight: 56, history: "No", scanId: "832", scanDate: "2023-02-28", diagnosis: "Benign" },
-            { id: "5391", name: "Susan Townsend", age: 37, height: 178, weight: 77, history: "No", scanId: "875 393", scanDate: "2023-08-03", diagnosis: "Benign" },
-            { id: "5539", name: "Harriet Rodgers", age: 18, height: 172, weight: 91, history: "No", scanId: "746", scanDate: "2023-04-19", diagnosis: "Benign" },
-            { id: "5559", name: "Kaye Swift", age: 28, height: 184, weight: 93, history: "No", scanId: "634", scanDate: "2023-06-09", diagnosis: "Benign" },
-            { id: "5590", name: "Teresa Dean", age: 51, height: 190, weight: 50, history: "No", scanId: "270", scanDate: "2023-02-20", diagnosis: "Benign" },
-            { id: "5724", name: "Jayne Pickering", age: 35, height: 189, weight: 76, history: "No", scanId: "209", scanDate: "2023-10-12", diagnosis: "Benign" },
-            { id: "5764", name: "Serena Herbert", age: 55, height: 159, weight: 91, history: "No", scanId: "807 854 606", scanDate: "2023-02-24", diagnosis: "Benign" },
-            { id: "5794", name: "Sara Higgs", age: 56, height: 178, weight: 68, history: "No", scanId: "194 818", scanDate: "2023-11-10", diagnosis: "Benign" },
-            { id: "5934", name: "Kylie Millar", age: 43, height: 180, weight: 86, history: "No", scanId: "267", scanDate: "2023-06-07", diagnosis: "Benign" },
-            { id: "6022", name: "Alison Boyd", age: 52, height: 176, weight: 73, history: "No", scanId: "597", scanDate: "2023-11-24", diagnosis: "Benign" },
-            { id: "6318", name: "Alice Bradley", age: 58, height: 182, weight: 100, history: "No", scanId: "335 395 873", scanDate: "2023-02-06", diagnosis: "Benign" },
-            { id: "6984", name: "Margaret Hollis", age: 24, height: 169, weight: 75, history: "No", scanId: "343", scanDate: "2023-06-01", diagnosis: "Benign" },
-            { id: "6998", name: "Heather Bell", age: 60, height: 160, weight: 91, history: "No", scanId: "793", scanDate: "2023-02-02", diagnosis: "Benign" },
-            { id: "7007", name: "Jade Bradshaw", age: 30, height: 168, weight: 93, history: "No", scanId: "487", scanDate: "2024-02-06", diagnosis: "Benign" },
-            { id: "7174", name: "Hayley Chappell", age: 57, height: 152, weight: 61, history: "No", scanId: "500 676", scanDate: "2023-08-17", diagnosis: "Malignant" },
-            { id: "7478", name: "Annette Hull", age: 19, height: 170, weight: 85, history: "No", scanId: "577 189", scanDate: "2023-05-23", diagnosis: "Benign" },
-            { id: "7854", name: "Catherine Barlow", age: 48, height: 171, weight: 56, history: "Yes", scanId: "708", scanDate: "2023-05-05", diagnosis: "Benign" },
-            { id: "7895", name: "Lynn Hibbert", age: 54, height: 163, weight: 72, history: "No", scanId: "823 456", scanDate: "2023-10-11", diagnosis: "Benign" },
-            { id: "8023", name: "Elsie Short", age: 60, height: 159, weight: 85, history: "No", scanId: "483", scanDate: "2023-11-15", diagnosis: "Benign" },
-            { id: "8225", name: "Jennifer Hope", age: 34, height: 179, weight: 67, history: "No", scanId: "187 134", scanDate: "2023-09-21", diagnosis: "Benign" },
-            { id: "8290", name: "Philomena Joyce", age: 24, height: 162, weight: 61, history: "No", scanId: "427 124", scanDate: "2023-08-31", diagnosis: "Benign" },
-            { id: "8313", name: "Maggie Ray", age: 55, height: 188, weight: 60, history: "Yes", scanId: "719", scanDate: "2024-04-25", diagnosis: "Benign" },
-            { id: "8326", name: "Veronica Frost", age: 53, height: 180, weight: 97, history: "No", scanId: "391 764 512", scanDate: "2023-07-04", diagnosis: "Malignant" },
-            { id: "8556", name: "Clara Gray", age: 27, height: 167, weight: 55, history: "No", scanId: "743 122", scanDate: "2023-09-07", diagnosis: "Malignant" },
-            { id: "8778", name: "Elisabeth Slade", age: 21, height: 183, weight: 54, history: "No", scanId: "150", scanDate: "2024-04-08", diagnosis: "Benign" }
-        ];
+        const patientData = [];
+        const scanIds = [];
+        let c = 0;
+        let i = 0;
+        const scans = [];
+        
+        function fetchData() {
+            
+        fetch('http://127.0.0.1:8000/usscans/', {
+            method: "GET",
+        })
+        .then((data) => {
+            return data.json();
+        })
+        .then((data) => {
+            scans.push(data);
+            
+            while (c < data.length) {
+                let dataIdentify = data[c].scan_id;
+                scanIds.push(dataIdentify)
+                c++;
+            }
 
-         // Function to parse date string (assuming format is DD/MM/YYYY)
+            fetch('http://127.0.0.1:8000/patients/', {
+            method: "GET",
+            })
+            .then((data) => {        
+                return data.json();
+            })
+            .then((data) => {          
+                while (i < data.length) {
+                    
+                    if (!(scanIds.includes(data[i].patient_scan_id))) {
+                        i++;
+                        continue;            
+                    }
+                    let cur = scanIds.indexOf(data[i].patient_scan_id);
+                    sendData = {
+                        id: (data[i].patient_id).toString(),
+                        name: data[i].patient_name,
+                        age: data[i].patient_age,
+                        height: data[i].patient_height,
+                        weight: data[i].patient_weight,
+                        history: data[i].patient_history,
+                        scanId: (data[i].patient_scan_id).toString(),
+                        scanDate: scans[0][cur].scan_date,
+                        diagnosis: scans[0][cur].diagnosis
+                    };
+                    patientData.push(sendData);
+                    i++;
+                }
+                if (!(c == i)) {
+                    document.getElementById('warning').style.display = 'block';
+                }
+            });            
+        })
+        updateVisualizations();
+    }
+        
+       
+         // Function to parse date string (format is DD/MM/YYYY)
          function parseDate(dateString) {
             const [day, month, year] = dateString.split('/');
             return new Date(year, month - 1, day);
@@ -173,7 +170,6 @@
             const malignant = document.getElementById('malignant').checked;
             const startDate = document.getElementById('scan_date_start').value;
             const endDate = document.getElementById('scan_date_end').value;
-
             return patientData.filter(patient => {
                 const matchesSearch = patient.name.toLowerCase().includes(search) || patient.id.toLowerCase().includes(search);
                 const matchesDiagnosis = (benign && patient.diagnosis === "Benign") || (malignant && patient.diagnosis === "Malignant");
@@ -182,33 +178,6 @@
 
                 return matchesSearch && matchesDiagnosis && matchesDateRange;
             });
-        }
-
-        // Function to update scatter plot
-        function updateScatterPlot(data) {
-            const xVar = document.getElementById('var_x').value;
-            const yVar = document.getElementById('var_y').value;
-
-            const trace = {
-                x: data.map(d => d[xVar]),
-                y: data.map(d => d[yVar]),
-                mode: 'markers',
-                type: 'scatter',
-                text: data.map(d => `ID: ${d.id}<br>Name: ${d.name}<br>Diagnosis: ${d.diagnosis}`),
-                marker: { 
-                    color: data.map(d => d.diagnosis === "Benign" ? 'blue' : 'red'),
-                    size: 10
-                }
-            };
-
-            const layout = {
-                title: `${yVar.charAt(0).toUpperCase() + yVar.slice(1)} vs ${xVar.charAt(0).toUpperCase() + xVar.slice(1)}`,
-                xaxis: { title: xVar.charAt(0).toUpperCase() + xVar.slice(1) },
-                yaxis: { title: yVar.charAt(0).toUpperCase() + yVar.slice(1) },
-                hovermode: 'closest'
-            };
-
-            Plotly.newPlot('scatterPlot', [trace], layout);
         }
 
         // Function to update summary stats
@@ -251,9 +220,11 @@
         function updatePatientTable(data) {
             const tableBody = document.querySelector('#patientTable tbody');
             tableBody.innerHTML = '';
+            let index = 0;
 
             data.forEach(patient => {
                 const row = tableBody.insertRow();
+                row.className = 'row' + index.toString();
                 row.insertCell(0).textContent = patient.id;
                 row.insertCell(1).textContent = patient.name;
                 row.insertCell(2).textContent = patient.age;
@@ -263,13 +234,36 @@
                 row.insertCell(6).textContent = patient.scanId;
                 row.insertCell(7).textContent = patient.scanDate;
                 row.insertCell(8).textContent = patient.diagnosis;
+
+                row.addEventListener('click', () => {
+                    handleRowClick(patient);
+                });
+
+                index++;
             });
+            
         }
 
+        function handleRowClick(patient) {
+            url = new URL('http://127.0.0.1:8000/deleterow/');
+            url.searchParams.append('user_id', patient.id);
+            fetch(url, {
+            method: "DELETE",
+            })
+            .then((data) => {
+                if (data.ok) {
+                    location.reload();
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+        }
         // Function to update all visualizations
         function updateVisualizations() {
             const filteredData = filterData();
-            updateScatterPlot(filteredData);
+            
             updateSummaryStats(filteredData);
             updateHistogram(filteredData);
             updatePatientTable(filteredData);
@@ -277,12 +271,13 @@
 
         // Event listeners for filter inputs
         document.getElementById('apply-filters').addEventListener('click', updateVisualizations);
-        document.getElementById('var_x').addEventListener('change', updateVisualizations);
-        document.getElementById('var_y').addEventListener('change', updateVisualizations);
 
         // Initial update to show all data
         document.addEventListener('DOMContentLoaded', () => {
-            updateVisualizations();
+            setTimeout(() => {
+                fetchData();
+            }, 200);
+            fetchData();
         });
     </script>
 </body>
