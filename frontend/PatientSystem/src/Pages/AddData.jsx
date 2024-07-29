@@ -63,9 +63,7 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
 
                 fetch("http://127.0.0.1:8000/patients/", {
                   method: "GET",
-                }).then((response) => {
-                  console.log(response);
-                });
+                })
               }
             })
             .catch((error) => {
@@ -80,6 +78,23 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
         alert(error);
         return;
       });
+  };
+
+  const setScanImage = (e) => {
+    const file = e.target.files[0];
+    const files = new FormData();
+    files.append("file", file);
+
+    fetch('http://127.0.0.1:8000/imageadd', {
+      method: "PUT",
+      body: files
+    })
+    .then(() => {        
+      alert('Image added successfully');
+    })
+    .catch(() => {
+      alert('Please ensure you are entering images in the correct format');
+    })
   };
 
   return (
@@ -136,6 +151,7 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
                     />
                     Add US Scan Data
                   </label>
+                
                 </div>
                 <div className="mt-5">
                   <button
@@ -158,18 +174,21 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
                 className="flex flex-col items-center"
               >
                 <h1 className="text-[22px] font-bold text-[#eb3131] mt-5">
-                  REMOVE ROW
+                  ADD SCAN IMAGE
                 </h1>
-                <p className="text-[16px] font-semibold text-gray-700 mt-3">
-                  Enter User ID
+                <p className="text-[16px] font-semibold text-gray-700 mt-2 mb-5">
+                  Add available user scan image, naming it with the scan ID (.png)
                 </p>
-                  <input className="border mb-5 mt-4"></input>
-                  <button
-                    type="submit"
-                    className="bg-[#33ab39] font-semibold text-white py-3 px-6 rounded-lg hover:bg-[#1e6321] transition duration-300 ease-in-out"
-                  >
-                    Submit
-                  </button>
+                <label className="cursor-pointer bg-[#005EB8] font-semibold text-white py-3 px-6 rounded-lg hover:bg-[#004a9e] transition duration-300 ease-in-out">
+                  <input
+                    type="file"
+                    id="scanImage"
+                    className="hidden"
+                    accept=".png"
+                    onChange={(e) => setScanImage(e)}
+                  />
+                  Add Scan
+                </label>
               </form>
             </div>
           </div>

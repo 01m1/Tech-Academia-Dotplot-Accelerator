@@ -22,3 +22,6 @@ class admin_users(models.Model):
     user_id = models.IntegerField(primary_key=True)
     user_name = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
+
+class ScanImage(models.Model):
+    image = models.ImageField()

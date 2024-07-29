@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
 from rest_framework import status
+from django.core.files.base import ContentFile
 
 from .models import patients, us_scans, admin_users
 from .serializers import PatientSerializer, USScansSerializer
@@ -245,3 +246,20 @@ def delete_user(request):
     except:
         return Response({'error': 'Patient not found'}, status=404)
 
+@api_view(['PUT'])
+def add_image(request):
+    try:
+        if 'file' not in request.FILES:
+            return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
+
+        file = request.FILES['file']
+        file_name = str(file)
+        file_path = f'./media/{file_name}'
+
+        with open(file_path, 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+        
+        return Response({'status': 'success', 'file_path': file_path})
+    except:
+        return Response({'status': 'error'}, status=400)

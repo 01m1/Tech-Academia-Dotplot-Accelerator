@@ -8,5 +8,6 @@ urlpatterns = [
     path('usscans/', views.receive_usscans_data, name='receive_usscans_data'),
     path('tumour/', views.get_tumour_image, name='get_tumour_image'),
     path('adminlogin/',views.admin_login, name='admin_login'),
-    path('deleterow/',views.delete_user, name='delete_user')
+    path('deleterow/',views.delete_user, name='delete_user'),
+    path('imageadd',views.add_image, name='add_image')
 ]
