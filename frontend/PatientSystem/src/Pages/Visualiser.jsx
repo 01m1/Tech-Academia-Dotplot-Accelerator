@@ -4,14 +4,16 @@ import Sidebar from "../component/Sidebar";
 import VisualSidebar from "../component/VisualSidebar";
 
 const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
-  const [patientTorso, setPatientTorso] = useState('http://127.0.0.1:8000/tumour/');
-  const [patientTumour, setPatientTumour] = useState('http://127.0.0.1:8000/media/white.png');
+  const [patientTorso, setPatientTorso] = useState('http://127.0.0.1:8000/media/coordinates.png');
+  const [patientTumour, setPatientTumour] = useState(['http://127.0.0.1:8000/media/white.png']);
+  
+  // Dont display heading 'Tumour Images' if there is no image
+  const showTumourHeader = patientTumour.includes('/media/white.png');
   
   return (
     <>
       <div>
         <Sidebar sidebarToggle={sidebarToggle} />
-
         <div
           className={`${
             sidebarToggle ? "ease-in-out duration-500" : "ml-28 ease-in-out duration-500"
@@ -21,18 +23,30 @@ const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
             setSidebarToggle={setSidebarToggle}
             sidebarToggle={sidebarToggle}
           />
-
+          <h1 className="text-[22px] flex flex-wrap justify-center  font-bold text-[#005EB8] mt-5">Visualise Patient Tumours</h1>
           <div className="flex items-center">
-            <div className="text-black w-full px-14 pt-14 flex max-w-[950px] mx-auto">
+            
+            <div className="text-black w-full px-14 pt-5 flex max-w-[950px] mx-auto">
               <div>
                 <VisualSidebar setTorso={setPatientTorso} setTumour={setPatientTumour}/>
               </div>
               <div className="flex flex-col items-center ml-10 mt-10">
-                <img src={patientTumour}  className="h-48 w-80 mt-10"/>
-                <img src={patientTorso} alt="Torso" className="md:w-[370px] ml-15" />
-              </div>       
-            </div>         
+                  <img src={patientTorso} alt="Torso" className="md:w-[500px] ml-15" />          
+              </div>                       
+            </div>                
           </div>
+          {showTumourHeader && (
+            <h1 className="text-[22px] flex flex-wrap justify-center font-bold text-[#005EB8]">
+              Tumour Images
+            </h1>
+          )}
+          <div className="flex flex-wrap justify-center mt-5 gap-10">
+            {patientTumour.map((tumour) => (
+              <div className="flex flex-col items-center mb-10">
+                <img src={tumour} className="h-48 w-80"/>
+              </div>
+            ))}
+          </div> 
         </div>
       </div>
     </>

@@ -27,19 +27,30 @@ const VisualSidebar = ({ setTorso, setTumour }) => {
       
       // Link to tumour images
       if (data.tumour == null) {
-        tumourImage = `http://127.0.0.1:8000/tumour/`;
+        tumourImage = `http://127.0.0.1:8000/media/coordinates.png/`;
       } else {
         const timestamp = new Date().getTime();
         tumourImage = `http://127.0.0.1:8000${data.tumour}?t=${timestamp}`;
       }
       if (data.tumour_image == null) {
-        realTumour = `http://127.0.0.1:8000/media/white.png`;
+        realTumour = [`http://127.0.0.1:8000/media/white.png`];
       } else {
-        const timestamp = new Date().getTime();
-        realTumour = `http://127.0.0.1:8000${data.tumour_image}?t=${timestamp}`;
+        if (Array.isArray(data.tumour_image)) {;
+          let i = 0;
+          realTumour = [];
+
+          while (i < data.tumour_image.length) {
+            const timestamp = new Date().getTime();
+            realTumour.push([`http://127.0.0.1:8000${data.tumour_image[i]}?t=${timestamp}`]);
+            i++;
+          };
+        } else {
+
+          const timestamp = new Date().getTime();
+          realTumour = [`http://127.0.0.1:8000${data.tumour_image}?t=${timestamp}`];
+        }
       }
-      
-      console.log(tumourImage)
+
       setId(data.patient_id);
       setPatientName(data.patient_name);
       setPatientAge(data.patient_age);
@@ -64,11 +75,11 @@ const VisualSidebar = ({ setTorso, setTumour }) => {
             onChange={(e) => setValue(e.target.value)}
           />
         </div>
-        <div className="border shadow px-8 py-10 pb-20 rounded-md text-[15px] bg-[#005EB8] ">
+        <div className="border shadow px-8 py-10 rounded-md text-[15px] bg-[#005EB8] ">
           {!id ? (
             <h1 className="p-5 font-bold rounded text-white text-l text-center">Patient Not Found</h1>
           ) : (
-            <ul className="flex flex-col gap-10 text-white pb-1 pt-7">
+            <ul className="flex flex-col gap-10 text-white pt-7">
               <li className="font-semibold">Patient ID: {id}</li>
               <li className="font-semibold">Patient Name: {patientName}</li>
               <li className="font-semibold">Age: {patientAge}</li>
