@@ -263,3 +263,17 @@ def add_image(request):
         return Response({'status': 'success', 'file_path': file_path})
     except:
         return Response({'status': 'error'}, status=400)
+
+@api_view(['POST'])
+def register(request):
+    try:
+        username = request.GET.get('username')
+        password = request.GET.get('password')
+        print(username,password)
+
+        admin_users.objects.create(user_name=username, password=password)
+        return Response("Success", status=status.HTTP_200_OK)
+
+    except Exception as e:
+
+        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

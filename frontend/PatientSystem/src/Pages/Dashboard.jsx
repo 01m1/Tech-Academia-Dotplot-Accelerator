@@ -20,16 +20,16 @@ const Dashboard = ({ sidebarToggle, setSidebarToggle }) => {
             sidebarToggle={sidebarToggle}
           />
 
-          <div className="text-black w-full px-10 pt-6 ">
-            <div className="max-w-[1000px]  rounded-md mx-auto px-8 flex flex-col items-center py-10 ">
-              <h1 className="text-[22px] font-bold text-[#00273F] mt-4">
+          <div className="text-black w-full px-10  ">
+            <div className="max-w-[1200px]  rounded-md mx-auto px-8 flex flex-col items-center py-10 ">
+              <h1 className="text-[22px] font-bold text-[#00273F]">
                 Patient Dashboard
               </h1>
               <div className="flex mt-4 bg-white justify-start w-full  border shadow  py-2 rounded-md text-[15px]">
                 <div>
                   <iframe
                     src="/GRAPHS.html"
-                    style={{ width: "1000px", height: "560px" }}
+                    style={{ width: "1130px", height: "780px" }}
                   />
                 </div>
               </div>

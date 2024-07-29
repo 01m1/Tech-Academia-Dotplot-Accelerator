@@ -9,5 +9,6 @@ urlpatterns = [
     path('tumour/', views.get_tumour_image, name='get_tumour_image'),
     path('adminlogin/',views.admin_login, name='admin_login'),
     path('deleterow/',views.delete_user, name='delete_user'),
-    path('imageadd',views.add_image, name='add_image')
+    path('imageadd',views.add_image, name='add_image'),
+    path('register/',views.register, name='register')
 ]

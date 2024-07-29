@@ -19,8 +19,7 @@ class us_scans(models.Model):
 
 # Admin users db
 class admin_users(models.Model):
-    user_id = models.IntegerField(primary_key=True)
-    user_name = models.CharField(max_length=100)
+    user_name = models.CharField(primary_key=True, max_length=100)
     password = models.CharField(max_length=100)
 
 class ScanImage(models.Model):
