@@ -29,6 +29,14 @@
                                 <label class="form-check-label" for="malignant">Malignant</label>
                             </div>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Histogram Data:</label>
+                            <select class="form-select" id="HistoData">
+                                <option value="age">Age</option>
+                                <option value="weight">Weight</option>
+                                <option value="height">Height</option>
+                            </select>
+                        </div>
                         <div class="mb-2">
                             <label for="scan_date_start" class="form-label">Scan Date Range:</label>
                             <input type="date" id="scan_date_start" class="form-control mb-2">
@@ -159,7 +167,7 @@
        
          // Function to parse date string (format is DD/MM/YYYY)
          function parseDate(dateString) {
-            const [day, month, year] = dateString.split('/');
+            const [year, month, day] = dateString.split('-');
             return new Date(year, month - 1, day);
         }
 
@@ -200,18 +208,50 @@
 
         // Function to update histogram
         function updateHistogram(data) {
-            const trace = {
+            let trace;
+            let layout;
+
+            update = document.getElementById('HistoData').value
+            if (update == 'age') {
+                trace = {
                 x: data.map(d => d.age),
                 type: 'histogram',
                 marker: { color: data.map(d => d.diagnosis === "Benign" ? 'blue' : 'red') }
-            };
+                };
 
-            const layout = {
-                title: 'Age Distribution',
-                xaxis: { title: 'Age' },
-                yaxis: { title: 'Count' },
-                bargap: 0.05
-            };
+                layout = {
+                    title: 'Age Distribution',
+                    xaxis: { title: 'Age' },
+                    yaxis: { title: 'Count' },
+                    bargap: 0.05
+                };
+            } else if (update == 'weight') {
+                trace = {
+                x: data.map(d => d.weight),
+                type: 'histogram',
+                marker: { color: data.map(d => d.diagnosis === "Benign" ? 'blue' : 'red') }
+                };
+
+                layout = {
+                    title: 'Weight Distribution',
+                    xaxis: { title: 'Weight' },
+                    yaxis: { title: 'Count' },
+                    bargap: 0.05
+                };
+            } else {
+                trace = {
+                x: data.map(d => d.height),
+                type: 'histogram',
+                marker: { color: data.map(d => d.diagnosis === "Benign" ? 'blue' : 'red') }
+                };
+
+                layout = {
+                    title: 'Height Distribution',
+                    xaxis: { title: 'Height' },
+                    yaxis: { title: 'Count' },
+                    bargap: 0.05
+                };
+            }
 
             Plotly.newPlot('histogramPlot', [trace], layout);
         }
