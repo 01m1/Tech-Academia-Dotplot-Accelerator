@@ -63,7 +63,7 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
 
                 fetch("http://127.0.0.1:8000/patients/", {
                   method: "GET",
-                })
+                });
               }
             })
             .catch((error) => {
@@ -85,16 +85,16 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
     const files = new FormData();
     files.append("file", file);
 
-    fetch('http://127.0.0.1:8000/imageadd', {
+    fetch("http://127.0.0.1:8000/imageadd", {
       method: "PUT",
-      body: files
+      body: files,
     })
-    .then(() => {        
-      alert('Image added successfully');
-    })
-    .catch(() => {
-      alert('Please ensure you are entering images in the correct format');
-    })
+      .then(() => {
+        alert("Image added successfully");
+      })
+      .catch(() => {
+        alert("Please ensure you are entering images in the correct format");
+      });
   };
 
   return (
@@ -103,7 +103,9 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
 
       <div
         className={`${
-          sidebarToggle ? "ease-in-out duration-500" : "ml-32 ease-in-out duration-500"
+          sidebarToggle
+            ? "ease-in-out duration-500"
+            : "ml-32 ease-in-out duration-500"
         } w-full flex flex-col`}
       >
         <Navbar
@@ -118,7 +120,7 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
                 onSubmit={handleSubmit}
                 className="flex flex-col items-center"
               >
-                <h1 className="text-[22px] font-bold text-[#005EB8] mt-5">
+                <h1 className="text-[22px] font-bold text-[#00273F] mt-5">
                   ADD NEW CSV DATA
                 </h1>
                 <p className="text-[16px] font-semibold text-gray-700 mt-5">
@@ -127,7 +129,7 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
                 <div className="mt-5 flex gap-4">
                   <label
                     htmlFor="patientData"
-                    className="cursor-pointer bg-[#005EB8] font-semibold text-white py-3 px-6 rounded-lg hover:bg-[#004a9e] transition duration-300 ease-in-out"
+                    className="cursor-pointer bg-[#00273F] font-semibold text-white py-3 px-6 rounded-lg hover:bg-[#004a9e] transition duration-300 ease-in-out"
                   >
                     <input
                       type="file"
@@ -140,7 +142,7 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
                   </label>
                   <label
                     htmlFor="usScanData"
-                    className="cursor-pointer bg-[#005EB8] font-semibold text-white py-3 px-6 rounded-lg hover:bg-[#004a9e] transition duration-300 ease-in-out"
+                    className="cursor-pointer bg-[#00273F] font-semibold text-white py-3 px-6 rounded-lg hover:bg-[#004a9e] transition duration-300 ease-in-out"
                   >
                     <input
                       type="file"
@@ -151,12 +153,11 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
                     />
                     Add US Scan Data
                   </label>
-                
                 </div>
                 <div className="mt-5">
                   <button
                     type="submit"
-                    className="bg-[#33ab39] font-semibold text-white py-3 px-6 rounded-lg hover:bg-[#1e6321] transition duration-300 ease-in-out"
+                    className="bg-[#3E737A] font-semibold text-white py-3 px-6 rounded-lg hover:bg-[#1e6321] transition duration-300 ease-in-out"
                   >
                     Submit
                   </button>
@@ -177,9 +178,10 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
                   ADD SCAN IMAGE
                 </h1>
                 <p className="text-[16px] font-semibold text-gray-700 mt-2 mb-5">
-                  Add available user scan image, naming it with the scan ID (.png)
+                  Add available user scan image, naming it with the scan ID
+                  (.png)
                 </p>
-                <label className="cursor-pointer bg-[#005EB8] font-semibold text-white py-3 px-6 rounded-lg hover:bg-[#004a9e] transition duration-300 ease-in-out">
+                <label className="cursor-pointer bg-[#00273F] font-semibold text-white py-3 px-6 rounded-lg hover:bg-[#004a9e] transition duration-300 ease-in-out">
                   <input
                     type="file"
                     id="scanImage"

@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        "custom-image": "url('/src/assets/banner.jpeg')",
+        "custom-image": "url('/src/assets/banner.png')",
       },
     },
   },
