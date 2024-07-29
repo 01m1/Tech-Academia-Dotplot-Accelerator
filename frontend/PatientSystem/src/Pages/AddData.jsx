@@ -59,7 +59,7 @@ const AddData = ({ sidebarToggle, setSidebarToggle }) => {
                 return;
               } else {
                 alert("Data submitted successfully");
-                navigate("/");
+                navigate("/Dashboard");
 
                 fetch("http://127.0.0.1:8000/patients/", {
                   method: "GET",

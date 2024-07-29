@@ -36,7 +36,10 @@
                         </div>
                     </div>
                     <div class="text-center">
-                        <button id="apply-filters" class="btn btn-primary mb-4" style="width: 120px;">Load Data</button>
+                        <button id="apply-filters" class="btn btn-primary mb-2" style="width: 120px;">Load Data</button>
+                    </div>
+                    <div class="text-center">
+                        <label for="Deletion" class="form-label">Click a row to remove user</label>
                     </div>
                     <div class="card-body border rounded border-warning w-10" id="warning">
                         <h5 class="card-title text-danger">Warning</h5>
@@ -82,6 +85,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <!-- Patient Data -->
                             </tbody>
                         </table>
                     </div>
@@ -216,9 +220,11 @@
         function updatePatientTable(data) {
             const tableBody = document.querySelector('#patientTable tbody');
             tableBody.innerHTML = '';
+            let index = 0;
 
             data.forEach(patient => {
                 const row = tableBody.insertRow();
+                row.className = 'row' + index.toString();
                 row.insertCell(0).textContent = patient.id;
                 row.insertCell(1).textContent = patient.name;
                 row.insertCell(2).textContent = patient.age;
@@ -228,9 +234,32 @@
                 row.insertCell(6).textContent = patient.scanId;
                 row.insertCell(7).textContent = patient.scanDate;
                 row.insertCell(8).textContent = patient.diagnosis;
+
+                row.addEventListener('click', () => {
+                    handleRowClick(patient);
+                });
+
+                index++;
             });
+            
         }
 
+        function handleRowClick(patient) {
+            url = new URL('http://127.0.0.1:8000/deleterow/');
+            url.searchParams.append('user_id', patient.id);
+            fetch(url, {
+            method: "DELETE",
+            })
+            .then((data) => {
+                if (data.ok) {
+                    location.reload();
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+
+        }
         // Function to update all visualizations
         function updateVisualizations() {
             const filteredData = filterData();

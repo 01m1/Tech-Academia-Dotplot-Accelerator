@@ -225,3 +225,23 @@ def admin_login(request):
         return Response("Success", status=status.HTTP_200_OK)
     else:
         return Response("Failure", status=status.HTTP_200_OK)
+
+# Delete Row
+@api_view(['DELETE'])
+def delete_user(request):
+    user_id = request.GET.get('user_id')
+    try:
+        patient = patients.objects.filter(patient_id=int(user_id))
+        if not patient.exists:
+            return Response({'error': 'Patient not found'}, status=404)
+        
+        patient_scan = patient[0].patient_scan_id
+        patient_scan = us_scans.objects.filter(scan_id=patient_scan)
+        
+        patient.delete()
+        patient_scan.delete()
+
+        return Response(status=status.HTTP_200_OK)
+    except:
+        return Response({'error': 'Patient not found'}, status=404)
+

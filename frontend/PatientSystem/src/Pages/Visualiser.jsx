@@ -8,7 +8,8 @@ const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
   const [patientTumour, setPatientTumour] = useState(['http://127.0.0.1:8000/media/white.png']);
   
   // Dont display heading 'Tumour Images' if there is no image
-  const showTumourHeader = patientTumour.includes('/media/white.png');
+  const showTumourHeader = patientTumour[0].includes('/media/white.png');
+  console.log(showTumourHeader);
   
   return (
     <>
@@ -35,15 +36,15 @@ const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
               </div>                       
             </div>                
           </div>
-          {showTumourHeader && (
+          {!showTumourHeader && (
             <h1 className="text-[22px] flex flex-wrap justify-center font-bold text-[#005EB8]">
               Tumour Images
             </h1>
           )}
           <div className="flex flex-wrap justify-center mt-5 gap-10">
-            {patientTumour.map((tumour) => (
+            {patientTumour.map((tumour, index) => (
               <div className="flex flex-col items-center mb-10">
-                <img src={tumour} className="h-48 w-80"/>
+                <img key={index} src={tumour} className="h-48 w-80"/>
               </div>
             ))}
           </div> 
