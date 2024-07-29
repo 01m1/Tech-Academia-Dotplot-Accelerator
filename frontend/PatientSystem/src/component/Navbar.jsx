@@ -1,8 +1,7 @@
 import React from "react";
-import { FaBell, FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { HiOutlineBars3 } from "react-icons/hi2";
-import { CiSettings, CiLogout } from "react-icons/ci"; // Assuming you have these icons
-import { Link } from "react-router-dom";
+import { CiLogout } from "react-icons/ci";
 
 const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
   return (
@@ -12,7 +11,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
         <div className="my-2  mb-4"></div>
         <HiOutlineBars3
           size={28}
-          className="cursor-pointer ml-6 text-[#79A0D5]"
+          className="cursor-pointer ml-6 text-[#3E737A]"
           onClick={() => setSidebarToggle(!sidebarToggle)}
         />
       </div>
@@ -20,7 +19,7 @@ const Navbar = ({ sidebarToggle, setSidebarToggle }) => {
       {/* Right side */}
       <div className="flex items-center gap-8">
         <div className="relative group">
-          <FaUserCircle className="w-4 h-4 w-[45px] h-[45px] text-[#005EB8]" />
+          <FaUserCircle className="w-4 h-4 w-[45px] h-[45px] text-[#00273F]" />
 
           <div className="hidden group-hover:block group-focus:block absolute right-0 top-full bg-white rounded-lg shadow w-32">
             <ul className="py-2 text-sm text-gray-950">
