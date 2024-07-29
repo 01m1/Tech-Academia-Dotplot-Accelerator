@@ -217,7 +217,11 @@ def get_tumour_image(request):
 # Log in
 @api_view(['GET'])
 def admin_login(request):
-    if admin_users.objects.filter(user_name=request.data['username'], password=request.data['password']).exists():
+
+    username = request.GET.get('username')
+    password = request.GET.get('password')
+
+    if admin_users.objects.filter(user_name=username, password=password).exists():
         return Response("Success", status=status.HTTP_200_OK)
     else:
         return Response("Failure", status=status.HTTP_200_OK)
