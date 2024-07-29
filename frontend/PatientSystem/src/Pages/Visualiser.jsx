@@ -56,9 +56,7 @@ const Visualiser = ({ sidebarToggle, setSidebarToggle }) => {
             </h1>
           )}
           <div className="flex flex-wrap justify-center mt-5 gap-10">
-            {patientTumour.map((tumour, index) => (
-              <div className="flex flex-col items-center mb-10">
-                <img key={index} src={tumour} className="h-48 w-80" />
+
               </div>
             ))}
           </div>
